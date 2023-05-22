@@ -10,25 +10,32 @@
 #--ip 172.0.0.2 --name ion-rx \
 #gamecat69/ion:latest
 
+# FROM ubuntu:lunar
 FROM ubuntu:14.04
-MAINTAINER Nik Ansell
+# MAINTAINER Nik Ansell
 LABEL Description="This image is used to run ION-LTP atop Ubuntu 14.04"
 
 #	Install pre-requisites and tools
 RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y \
 git gcc make wget mercurial automake autoconf patch nmap tcl libc6-dev nano tshark tcl-dev libdb-dev libssl-dev g++ \
+# libntirpc-dev \
 --no-install-recommends
 RUN apt-get clean
 
 #	Download, extract and patch source files
 RUN  mkdir -p /usr/local/src/ion
 WORKDIR /usr/local/src/ion
-RUN  wget http://downloads.sourceforge.net/project/ion-dtn/ion-3.7.0.tar.gz --no-check-certificate \
-  && tar -zxvf ion-3.7.0.tar.gz \
-  && cd ion-3.7.0 && ./configure && make -j 10 && make install \
-  && ldconfig
+# RUN  wget http://downloads.sourceforge.net/project/ion-dtn/ion-3.7.0.tar.gz --no-check-certificate \
+COPY . .
+RUN tar -zxvf ion-3.7.0.tar.gz \
+  && cd ion-3.7.0 && ./configure 
+  # CFLAGS=-I/usr/include/ntirpc/rpc
+# RUN ls -la /usr/include
+RUN cd ion-3.7.0 && ls -la && make
+RUN cd ion-3.7.0 && make install
+RUN ldconfig
 
-#	Create the base working directory
+# #	Create the base working directory
 RUN mkdir -p /mnt/dtnconfig
 
 EXPOSE 1113
