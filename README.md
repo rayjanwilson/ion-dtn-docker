@@ -1,5 +1,7 @@
 #	Create a docker environment running ion on two nodes
 
+`docker build -t local/ion-4.1.2-bullseye -f Dockerfile-ion-latest .`
+
 This solution provides a network test-bed for Delay and Disruption Tolerant Networking (DTN) using the
 [Interplanetary Overlay Network (ION) software distribution](https://sourceforge.net/projects/ion-dtn/) and Docker.
 
